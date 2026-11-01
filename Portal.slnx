@@ -1,5 +1,5 @@
 <Solution>
   <Folder Name="/src/">
-    <Project Path="src/Portal.Web/Portal.Web.csproj" />
+    <Project Path="src/Portal.Api/Portal.Api.csproj" />
   </Folder>
 </Solution>

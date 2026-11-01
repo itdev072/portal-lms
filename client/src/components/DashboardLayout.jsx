@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import { Avatar } from "../pages/admin/AdminUsers";
+import logo from "../assets/logo-badge.png";
 
 export default function DashboardLayout({ navItems, roleLabel, children }) {
   const { user, logout } = useAuth();
@@ -73,10 +74,8 @@ export default function DashboardLayout({ navItems, roleLabel, children }) {
 function Brand({ compact = false }) {
   return (
     <div className="flex items-center gap-2.5">
-      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 font-display text-lg font-bold text-white shadow-glow">
-        P
-      </div>
-      {!compact && <span className="font-display text-lg font-bold text-white">Portal</span>}
+      <img src={logo} alt="KB Teach" className="h-9 w-9 rounded-xl object-cover shadow-glow" />
+      {!compact && <span className="font-display text-lg font-bold text-white">KB Teach</span>}
     </div>
   );
 }

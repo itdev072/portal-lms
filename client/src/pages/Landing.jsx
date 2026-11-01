@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import { Spinner } from "../components/ui/Primitives";
+import logo from "../assets/logo-badge.png";
 
 const CATEGORIES = [
   { key: "", label: "All" },
@@ -84,10 +85,8 @@ function TopNav({ user }) {
     <header className="sticky top-0 z-40 border-b border-surface-border/80 bg-surface/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-6 lg:px-8">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 font-display text-lg font-bold text-white shadow-glow">
-            P
-          </div>
-          <span className="font-display text-xl font-bold tracking-tight text-white">Portal</span>
+          <img src={logo} alt="KB Teach" className="h-9 w-9 rounded-xl object-cover shadow-glow" />
+          <span className="font-display text-xl font-bold tracking-tight text-white">KB Teach</span>
         </div>
         <div className="flex items-center gap-3">
           {user ? (
@@ -218,7 +217,7 @@ function Footer() {
   return (
     <footer className="border-t border-surface-border py-8">
       <div className="mx-auto max-w-7xl px-4 text-center text-sm text-slate-500 sm:px-6 lg:px-8">
-        © {new Date().getFullYear()} Portal — Learning Management System
+        © {new Date().getFullYear()} KB Teach — Learning Management System
       </div>
     </footer>
   );

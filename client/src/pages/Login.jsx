@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Alert } from "../components/ui/Primitives";
+import logo from "../assets/logo-badge.png";
 
 export default function Login() {
   const { login } = useAuth();
@@ -68,10 +69,8 @@ export function AuthShell({ title, subtitle, footer, children }) {
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(99,102,241,0.15),_transparent_60%)]" />
       <div className="relative w-full max-w-md">
         <Link to="/" className="mb-8 flex items-center justify-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 font-display text-lg font-bold text-white shadow-glow">
-            P
-          </div>
-          <span className="font-display text-xl font-bold text-white">Portal</span>
+          <img src={logo} alt="KB Teach" className="h-9 w-9 rounded-xl object-cover shadow-glow" />
+          <span className="font-display text-xl font-bold text-white">KB Teach</span>
         </Link>
         <div className="card p-8 animate-fadeUp">
           <h1 className="font-display text-2xl font-bold text-white">{title}</h1>

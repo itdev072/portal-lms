@@ -1,0 +1,44 @@
+@model AttendanceCheckInViewModel
+@{
+    ViewData["Title"] = "Check in";
+}
+
+<h1>Check in: @Model.ClassName</h1>
+
+@if (Model.Result != null)
+{
+    var cls = Model.Result == AttendanceStatus.Present ? "alert-success" : "alert-danger";
+    <div class="alert @cls">
+        @switch (Model.Result)
+        {
+            case AttendanceStatus.Present:
+                <p class="fw-bold">You're marked present ✅</p>
+                <p>Distance from campus: @Model.DistanceMeters m (within @Model.RadiusMeters m)</p>
+                break;
+            case AttendanceStatus.OutOfRange:
+                <p class="fw-bold">Not marked present — you're outside the campus area.</p>
+                <p>Distance from campus: @Model.DistanceMeters m (allowed: @Model.RadiusMeters m)</p>
+                break;
+            case AttendanceStatus.Expired:
+                <p class="fw-bold">This attendance session has closed or expired.</p>
+                break;
+            default:
+                <p class="fw-bold">This check-in link isn't valid.</p>
+                break;
+        }
+    </div>
+}
+else
+{
+    <p>Tap the button below and allow location access to check in. You must be on campus.</p>
+    <form id="checkin-form" asp-controller="Attendance" asp-action="Confirm" asp-route-token="@Model.Token" method="post">
+        <input type="hidden" id="checkin-lat" name="latitude" />
+        <input type="hidden" id="checkin-lng" name="longitude" />
+        <button type="button" id="checkin-button" class="btn btn-primary btn-lg">📍 Check in now</button>
+    </form>
+    <p id="checkin-status" class="text-muted mt-2"></p>
+}
+
+@section Scripts {
+    <script src="~/js/attendance-student.js" asp-append-version="true"></script>
+}

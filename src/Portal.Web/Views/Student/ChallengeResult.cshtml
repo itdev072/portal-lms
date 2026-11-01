@@ -1,0 +1,23 @@
+@model ChallengeResultViewModel
+@{
+    ViewData["Title"] = "Challenge result";
+}
+
+<h1>@(Model.AllPassed ? "All tests passed!" : "Not quite")</h1>
+
+<div class="alert @(Model.AllPassed ? "alert-success" : "alert-danger")" dir="auto">
+    <p class="fw-bold">@Model.Challenge.PromptKm</p>
+    <p>You submitted: <code>@Model.SubmittedOutput</code></p>
+    <ul>
+        @for (var i = 0; i < Model.PerTestCase.Count; i++)
+        {
+            <li>Test case @(i + 1): @(Model.PerTestCase[i] ? "✅ passed" : "❌ failed — expected " + Model.Challenge.TestCases[i].ExpectedOutput)</li>
+        }
+    </ul>
+    @if (Model.AllPassed)
+    {
+        <p>+@Model.XpAwarded XP</p>
+    }
+</div>
+
+<a asp-controller="Student" asp-action="Lesson" asp-route-id="@Model.Challenge.LessonId" class="btn btn-primary">Back to lesson</a>

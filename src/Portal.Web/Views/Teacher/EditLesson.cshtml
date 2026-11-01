@@ -1,0 +1,56 @@
+@model LessonFormViewModel
+@{
+    var isNew = string.IsNullOrEmpty(Model.Id);
+    ViewData["Title"] = isNew ? "New lesson" : "Edit lesson";
+}
+
+<h1>@(isNew ? "New lesson" : "Edit lesson")</h1>
+
+<form asp-controller="Teacher" asp-action="@(isNew ? "CreateLesson" : "EditLesson")" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="LevelId" />
+    <div class="row mb-3">
+        <div class="col">
+            <label asp-for="TitleKm" class="form-label"></label>
+            <input asp-for="TitleKm" class="form-control" dir="auto" />
+        </div>
+        <div class="col">
+            <label asp-for="TitleEn" class="form-label"></label>
+            <input asp-for="TitleEn" class="form-control" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ExplainerMd" class="form-label">Explainer (Khmer)</label>
+        <textarea asp-for="ExplainerMd" class="form-control" rows="3" dir="auto"></textarea>
+    </div>
+    <div class="mb-3">
+        <label asp-for="KeyTermsRaw" class="form-label">Key terms</label>
+        <input asp-for="KeyTermsRaw" class="form-control" placeholder="អថេរ:variable, កម្មវិធី:program" dir="auto" />
+        <div class="form-text">Format: khmer:english, khmer:english</div>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <label asp-for="ExampleCaption" class="form-label"></label>
+            <input asp-for="ExampleCaption" class="form-control" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ExampleCode" class="form-label"></label>
+        <textarea asp-for="ExampleCode" class="form-control font-monospace" rows="5"></textarea>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <label asp-for="Order" class="form-label"></label>
+            <input asp-for="Order" class="form-control" type="number" />
+        </div>
+        <div class="col">
+            <label asp-for="XpValue" class="form-label"></label>
+            <input asp-for="XpValue" class="form-control" type="number" />
+        </div>
+        <div class="col">
+            <label asp-for="EstimatedMinutes" class="form-label"></label>
+            <input asp-for="EstimatedMinutes" class="form-control" type="number" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

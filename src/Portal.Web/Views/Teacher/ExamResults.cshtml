@@ -1,0 +1,29 @@
+@model ExamResultsViewModel
+@{
+    ViewData["Title"] = Model.Exam.Title + " - Results";
+}
+
+<h1>@Model.Exam.Title — Results</h1>
+
+<table class="table">
+    <thead><tr><th>Student</th><th>Score</th><th>Submitted</th></tr></thead>
+    <tbody>
+        @foreach (var row in Model.Rows)
+        {
+            <tr>
+                <td>@row.Student.DisplayName</td>
+                <td>
+                    @if (row.Attempt?.SubmittedAt != null)
+                    {
+                        @($"{row.Attempt.Score} / {row.Attempt.MaxScore}")
+                    }
+                    else
+                    {
+                        <span class="text-muted">Not submitted</span>
+                    }
+                </td>
+                <td>@row.Attempt?.SubmittedAt?.ToString("MMM d, h:mm tt")</td>
+            </tr>
+        }
+    </tbody>
+</table>

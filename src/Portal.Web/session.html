@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Attendance session - Portal</title>
+    
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/site.css?v=zeR5PHeeHbxfGkL8WV86OzdoF6UnjuCmnagaocD-cbo" />
+    <link rel="stylesheet" href="/Portal.Web.styles.css?v=W0ricmq0hPBkheMQomf95pt2Dm_YA78Bubx4wQbJUyk" />
+</head>
+<body>
+    <header b-n5gszefvmp>
+        <nav b-n5gszefvmp class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+            <div b-n5gszefvmp class="container-fluid">
+                <a class="navbar-brand" href="/">Portal</a>
+                <button b-n5gszefvmp class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span b-n5gszefvmp class="navbar-toggler-icon"></span>
+                </button>
+                <div b-n5gszefvmp class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul b-n5gszefvmp class="navbar-nav flex-grow-1">
+                            <li b-n5gszefvmp class="nav-item"><a class="nav-link text-light" href="/Teacher/Dashboard">Dashboard</a></li>
+                            <li b-n5gszefvmp class="nav-item"><a class="nav-link text-light" href="/Teacher/CreateAttendanceSession">Take Attendance</a></li>
+                            <li b-n5gszefvmp class="nav-item"><a class="nav-link text-light" href="/Teacher/CreateExam">New Exam</a></li>
+                    </ul>
+                    <ul b-n5gszefvmp class="navbar-nav">
+                            <li b-n5gszefvmp class="nav-item navbar-text text-light me-3">Kouet (Teacher) (Teacher)</li>
+                            <li b-n5gszefvmp class="nav-item">
+                                <form method="post" class="d-inline" action="/Account/Logout">
+                                    <button b-n5gszefvmp type="submit" class="btn btn-outline-light btn-sm">Log out</button>
+                                <input name="__RequestVerificationToken" type="hidden" value="CfDJ8H1lOphcEzZNiWYYCroV04EvvZMno1pMjA5WwQW5IHRyYwbBQN2jAwnFY1EhdVWn_i9NJ-OM-_ghS6Z2bTWQLZXZu7shmzSwbwS-fsn33SQAhJ_ngETX0lUbeLX6JmLNVedvXmCMLCA6s4HDUDCyldUbL4JLTjCcjqO7dVU6NNQAZk8-4gXHwbEwS5S43gjzTw" /></form>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div b-n5gszefvmp class="container">
+        <main b-n5gszefvmp role="main" class="pb-3">
+            
+<h1>Attendance: SPD Year 2 - Section A</h1>
+<p class="text-muted">
+    Campus: Main Campus - Building A (radius 120 m) &middot;
+    Expires 3:43 AM
+    
+</p>
+
+<div class="row">
+    <div class="col-md-4 text-center">
+        <canvas id="attendance-qr" data-checkin-url="http://127.0.0.1:5219/attend/bcf3aa3360dd4025a128a33dc7144bc8"></canvas>
+        <p id="attendance-qr-fallback" style="display:none" class="text-danger">
+            QR render failed — share this link directly: <br /><code>http://127.0.0.1:5219/attend/bcf3aa3360dd4025a128a33dc7144bc8</code>
+        </p>
+        <p class="text-muted small mt-2">Students scan this with their phone camera.</p>
+
+            <form method="post" action="/Teacher/CloseAttendanceSession">
+                <input type="hidden" name="id" value="d1f63a21dc984e7b85b4f595796fa026" />
+                <button type="submit" class="btn btn-outline-danger btn-sm mt-2">Close session</button>
+            <input name="__RequestVerificationToken" type="hidden" value="CfDJ8H1lOphcEzZNiWYYCroV04EvvZMno1pMjA5WwQW5IHRyYwbBQN2jAwnFY1EhdVWn_i9NJ-OM-_ghS6Z2bTWQLZXZu7shmzSwbwS-fsn33SQAhJ_ngETX0lUbeLX6JmLNVedvXmCMLCA6s4HDUDCyldUbL4JLTjCcjqO7dVU6NNQAZk8-4gXHwbEwS5S43gjzTw" /></form>
+    </div>
+    <div class="col-md-8">
+        <h2>Checked in (0)</h2>
+        <table class="table" id="attendance-record-list">
+            <thead><tr><th>Student</th><th>Status</th><th>Distance</th><th>Time</th></tr></thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+        </main>
+    </div>
+
+    <footer b-n5gszefvmp class="border-top footer text-muted">
+        <div b-n5gszefvmp class="container">
+            &copy; 2026 - Portal - C# Learning Management System
+        </div>
+    </footer>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/site.js?v=y_Ngd8W21UpuCUhEqGbUKDEqFnNfTjAfb24GhJJGUyM"></script>
+    
+    <script src="/lib/qrcode/qrcode.min.js"></script>
+    <script src="/js/attendance-teacher.js?v=KH5wp-6WPJL7mYZEAzJ85b-I_v1LSUnTnQK12hPA2No"></script>
+
+</body>
+</html>

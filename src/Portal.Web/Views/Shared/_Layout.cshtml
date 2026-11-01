@@ -1,0 +1,134 @@
+﻿@using Portal.Web.Services
+@{
+    var isAuthed = User.Identity?.IsAuthenticated == true;
+    var role = isAuthed ? User.GetRole() : (UserRole?)null;
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+    bool IsActive(string controller, string? action = null) =>
+        string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase)
+        && (action == null || string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase));
+}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Portal</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- Noto Sans Khmer: lesson/quiz content is bilingual Khmer/English, and not every
+         student or teacher device ships a Khmer-capable system font, so we load one
+         rather than risk broken glyph shaping on Windows/older devices. Vendored
+         locally (see wwwroot/lib/fonts/noto-sans-khmer) rather than from Google Fonts
+         so it still loads on networks that restrict fonts.googleapis.com. -->
+    <link rel="stylesheet" href="~/lib/fonts/noto-sans-khmer/noto-sans-khmer.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Portal.Web.styles.css" asp-append-version="true" />
+</head>
+<body>
+@if (isAuthed)
+{
+    <div class="app-shell">
+        <button class="sidebar-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#appSidebar" aria-controls="appSidebar" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            Portal
+        </button>
+        <aside class="sidebar collapse d-md-flex flex-md-column" id="appSidebar">
+            <a asp-controller="Home" asp-action="Index" class="sidebar-brand">
+                <span class="brand-badge">P</span>
+                <span class="brand-text">Portal</span>
+            </a>
+
+            <div class="sidebar-user">
+                <div class="avatar">@(string.IsNullOrEmpty(User.GetDisplayName()) ? "?" : User.GetDisplayName()!.Trim().Substring(0, 1).ToUpper())</div>
+                <div>
+                    <div class="user-name">@User.GetDisplayName()</div>
+                    <div class="user-role">@role</div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                @if (role == UserRole.Student)
+                {
+                    <a class="nav-link @(IsActive("Student", "Dashboard") ? "active" : "")" asp-controller="Student" asp-action="Dashboard">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 0 0 1 1h3v-6h6v6h3a1 1 0 0 0 1-1v-9"/></svg>
+                        Dashboard
+                    </a>
+                    <a class="nav-link @(IsActive("Student", "Exams") ? "active" : "")" asp-controller="Student" asp-action="Exams">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="12" y2="16"/></svg>
+                        Exams
+                    </a>
+                }
+                else if (role == UserRole.Teacher)
+                {
+                    <a class="nav-link @(IsActive("Teacher", "Dashboard") ? "active" : "")" asp-controller="Teacher" asp-action="Dashboard">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 0 0 1 1h3v-6h6v6h3a1 1 0 0 0 1-1v-9"/></svg>
+                        Dashboard
+                    </a>
+                    <a class="nav-link @(IsActive("Teacher", "CreateAttendanceSession") ? "active" : "")" asp-controller="Teacher" asp-action="CreateAttendanceSession">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><line x1="15" y1="15" x2="15" y2="19"/><line x1="19" y1="15" x2="19" y2="19"/><line x1="15" y1="17" x2="19" y2="17"/></svg>
+                        Take Attendance
+                    </a>
+                    <a class="nav-link @(IsActive("Teacher", "CreateExam") ? "active" : "")" asp-controller="Teacher" asp-action="CreateExam">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="12" y2="16"/></svg>
+                        New Exam
+                    </a>
+                }
+                else if (role == UserRole.Admin)
+                {
+                    <a class="nav-link @(IsActive("Admin", "Dashboard") ? "active" : "")" asp-controller="Admin" asp-action="Dashboard">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 0 0 1 1h3v-6h6v6h3a1 1 0 0 0 1-1v-9"/></svg>
+                        Dashboard
+                    </a>
+                    <a class="nav-link @(IsActive("Admin", "Users") ? "active" : "")" asp-controller="Admin" asp-action="Users">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        Users
+                    </a>
+                    <a class="nav-link @(IsActive("Admin", "Levels") ? "active" : "")" asp-controller="Admin" asp-action="Levels">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                        Levels
+                    </a>
+                }
+            </nav>
+
+            <div class="sidebar-logout">
+                <form asp-controller="Account" asp-action="Logout" method="post">
+                    <button type="submit" class="btn-logout">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                        Log out
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <div class="main-col">
+            <header class="topbar">
+                <span>@DateTime.Now.ToString("dddd, MMMM d, yyyy")</span>
+            </header>
+            <main role="main" class="content-area">
+                @RenderBody()
+            </main>
+            <footer class="app-footer">
+                &copy; 2026 - Portal - C# Learning Management System
+            </footer>
+        </div>
+    </div>
+}
+else
+{
+    <main role="main" class="guest-shell">
+        @RenderBody()
+    </main>
+    @if (ViewData["HideGuestFooter"] == null)
+    {
+        <footer class="app-footer guest-footer">
+            &copy; 2026 - Portal - C# Learning Management System
+        </footer>
+    }
+}
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

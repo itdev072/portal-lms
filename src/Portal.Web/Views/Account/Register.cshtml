@@ -1,0 +1,82 @@
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+    ViewData["HideGuestFooter"] = true;
+}
+
+<div class="auth-split">
+    <div class="auth-left">
+        <span class="brand-badge">P</span>
+        <h1>Join Portal</h1>
+        <p>Create a student account to start learning C# — lessons, quizzes, coding challenges, midterm exams, and attendance, all in one place.</p>
+        <div class="auth-features">
+            <div class="auth-feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                <span>Leveled lessons, mapped to your course</span>
+            </div>
+            <div class="auth-feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Track your XP and progress as you go</span>
+            </div>
+            <div class="auth-feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg>
+                <span>Teacher and admin accounts are provisioned separately</span>
+            </div>
+        </div>
+    </div>
+    <div class="auth-right">
+        <div class="auth-card">
+            <h2>Create a student account</h2>
+            <p class="auth-sub">Teacher and admin accounts are created by an administrator.</p>
+
+            @if (!string.IsNullOrEmpty(Model.Error))
+            {
+                <div class="alert alert-danger">@Model.Error</div>
+            }
+
+            <form asp-controller="Account" asp-action="Register" method="post">
+                <div class="mb-3">
+                    <label asp-for="DisplayName" class="form-label"></label>
+                    <input asp-for="DisplayName" class="form-control" autofocus />
+                    <span asp-validation-for="DisplayName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                    <div class="password-field">
+                        <input asp-for="Password" class="form-control" id="regPassword" />
+                        <button type="button" class="password-toggle" data-target="regPassword" aria-label="Show password">
+                            <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            <svg class="icon-eye-off d-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.6 18.6 0 0 1 5.06-5.94M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        </button>
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ConfirmPassword" class="form-label"></label>
+                    <div class="password-field">
+                        <input asp-for="ConfirmPassword" class="form-control" id="regConfirmPassword" />
+                        <button type="button" class="password-toggle" data-target="regConfirmPassword" aria-label="Show password">
+                            <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            <svg class="icon-eye-off d-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.6 18.6 0 0 1 5.06-5.94M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        </button>
+                    </div>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+                <div class="auth-switch">
+                    Already have an account? <a asp-controller="Account" asp-action="Login">Log in</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/auth.js" asp-append-version="true"></script>
+}

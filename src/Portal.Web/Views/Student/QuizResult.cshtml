@@ -1,0 +1,22 @@
+@model QuizResultViewModel
+@{
+    ViewData["Title"] = "Quiz result";
+}
+
+<h1>@(Model.IsCorrect ? "Correct!" : "Not quite")</h1>
+
+<div class="alert @(Model.IsCorrect ? "alert-success" : "alert-danger")" dir="auto">
+    <p class="fw-bold">@Model.Quiz.QuestionKm</p>
+    <p>Your answer: @Model.Quiz.Options[Model.SelectedIndex]</p>
+    @if (!Model.IsCorrect)
+    {
+        <p>Correct answer: @Model.Quiz.Options[Model.Quiz.CorrectIndex]</p>
+    }
+    <p>@Model.Quiz.ExplanationKm</p>
+    @if (Model.IsCorrect)
+    {
+        <p>+@Model.XpAwarded XP</p>
+    }
+</div>
+
+<a asp-controller="Student" asp-action="Lesson" asp-route-id="@Model.Quiz.LessonId" class="btn btn-primary">Back to lesson</a>

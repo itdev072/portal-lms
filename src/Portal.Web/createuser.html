@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New user - Portal</title>
+    
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/site.css?v=zeR5PHeeHbxfGkL8WV86OzdoF6UnjuCmnagaocD-cbo" />
+    <link rel="stylesheet" href="/Portal.Web.styles.css?v=W0ricmq0hPBkheMQomf95pt2Dm_YA78Bubx4wQbJUyk" />
+</head>
+<body>
+    <header b-n5gszefvmp>
+        <nav b-n5gszefvmp class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+            <div b-n5gszefvmp class="container-fluid">
+                <a class="navbar-brand" href="/">Portal</a>
+                <button b-n5gszefvmp class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span b-n5gszefvmp class="navbar-toggler-icon"></span>
+                </button>
+                <div b-n5gszefvmp class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul b-n5gszefvmp class="navbar-nav flex-grow-1">
+                            <li b-n5gszefvmp class="nav-item"><a class="nav-link text-light" href="/Admin/Dashboard">Dashboard</a></li>
+                            <li b-n5gszefvmp class="nav-item"><a class="nav-link text-light" href="/Admin/Users">Users</a></li>
+                            <li b-n5gszefvmp class="nav-item"><a class="nav-link text-light" href="/Admin/Levels">Levels</a></li>
+                    </ul>
+                    <ul b-n5gszefvmp class="navbar-nav">
+                            <li b-n5gszefvmp class="nav-item navbar-text text-light me-3">Admin (Admin)</li>
+                            <li b-n5gszefvmp class="nav-item">
+                                <form method="post" class="d-inline" action="/Account/Logout">
+                                    <button b-n5gszefvmp type="submit" class="btn btn-outline-light btn-sm">Log out</button>
+                                <input name="__RequestVerificationToken" type="hidden" value="CfDJ8H1lOphcEzZNiWYYCroV04EOq9oButylWt3wDatXcuZNWaBRP2ZPE8opOGYI55_j-yID8rpEIJJoTRusAXGDg1XOwgr3J5ANj-QOfKk3wwPjv_J38ktby0grRmRM3z6NJFr7GkVZ4tXSp9rsnBhV7HDGZrvvGTUKBu5UC6PAQGPP9L4L5xAJcV2umIEl8TQ21Q" /></form>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div b-n5gszefvmp class="container">
+        <main b-n5gszefvmp role="main" class="pb-3">
+            
+<h1>New user</h1>
+<form method="post" action="/Admin/CreateUser">
+    <div class="mb-3">
+        <label class="form-label" for="DisplayName">DisplayName</label>
+        <input class="form-control" type="text" data-val="true" data-val-required="The DisplayName field is required." id="DisplayName" name="DisplayName" value="" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="Email">Email</label>
+        <input class="form-control" type="text" data-val="true" data-val-required="The Email field is required." id="Email" name="Email" value="" />
+        <span class="text-danger field-validation-valid" data-valmsg-for="Email" data-valmsg-replace="true"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="Password">Password</label>
+        <input class="form-control" type="password" data-val="true" data-val-required="The Password field is required." id="Password" name="Password" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="Role">Role</label>
+        <select class="form-select" data-val="true" data-val-required="The Role field is required." id="Role" name="Role"><option selected="selected" value="0">Student</option>
+<option value="1">Teacher</option>
+<option value="2">Admin</option>
+</select>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+<input name="__RequestVerificationToken" type="hidden" value="CfDJ8H1lOphcEzZNiWYYCroV04EOq9oButylWt3wDatXcuZNWaBRP2ZPE8opOGYI55_j-yID8rpEIJJoTRusAXGDg1XOwgr3J5ANj-QOfKk3wwPjv_J38ktby0grRmRM3z6NJFr7GkVZ4tXSp9rsnBhV7HDGZrvvGTUKBu5UC6PAQGPP9L4L5xAJcV2umIEl8TQ21Q" /></form>
+
+        </main>
+    </div>
+
+    <footer b-n5gszefvmp class="border-top footer text-muted">
+        <div b-n5gszefvmp class="container">
+            &copy; 2026 - Portal - C# Learning Management System
+        </div>
+    </footer>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/site.js?v=y_Ngd8W21UpuCUhEqGbUKDEqFnNfTjAfb24GhJJGUyM"></script>
+    
+</body>
+</html>

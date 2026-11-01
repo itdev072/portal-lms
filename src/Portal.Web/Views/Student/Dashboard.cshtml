@@ -1,0 +1,85 @@
+@model StudentDashboardViewModel
+@{
+    ViewData["Title"] = "My Dashboard";
+}
+
+<h1>Welcome, @Model.StudentName</h1>
+
+<div class="row row-cols-2 row-cols-md-4 g-3 mb-4">
+    <div class="col">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 8.5 22 9.3 17 14 18.2 21 12 17.8 5.8 21 7 14 2 9.3 9 8.5 12 2"/></svg>
+            </div>
+            <div>
+                <div class="stat-value">@Model.TotalXp</div>
+                <div class="stat-label">Total XP</div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+            </div>
+            <div>
+                <div class="stat-value">@Model.OpenExams.Count()</div>
+                <div class="stat-label">Open exams</div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            </div>
+            <div>
+                <div class="stat-value">@Model.Levels.Count(l => l.Unlocked)</div>
+                <div class="stat-label">Levels unlocked</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.OpenExams.Any())
+{
+    <div class="alert alert-warning">
+        <strong>Open exams:</strong>
+        <ul class="mb-0">
+            @foreach (var exam in Model.OpenExams)
+            {
+                <li><a asp-controller="Student" asp-action="TakeExam" asp-route-id="@exam.Id">@exam.Title</a> — closes @exam.ClosesAt.ToString("MMM d, yyyy")</li>
+            }
+        </ul>
+    </div>
+}
+
+<h2 class="mt-4">Levels</h2>
+<div class="row row-cols-1 row-cols-md-2 g-3">
+    @foreach (var s in Model.Levels)
+    {
+        <div class="col">
+            <div class="card h-100 @(s.Unlocked ? "" : "opacity-75")">
+                <div class="card-body">
+                    <h5 class="card-title">@s.Level.Id — @s.Level.NameEn</h5>
+                    <p class="card-text text-muted" dir="auto">@s.Level.NameKm</p>
+                    @if (s.Unlocked)
+                    {
+                        <p>Lessons: @s.CompletedLessonCount / @s.LessonCount &middot; XP: @s.EarnedXp / @s.TotalXp</p>
+                        <div class="progress mb-2" style="height: 8px;">
+                            @{
+                                var pct = s.LessonCount == 0 ? 0 : (int)(100.0 * s.CompletedLessonCount / s.LessonCount);
+                            }
+                            <div class="progress-bar" role="progressbar" style="width: @pct%;"></div>
+                        </div>
+                        <a asp-controller="Student" asp-action="Level" asp-route-id="@s.Level.Id" class="btn btn-primary btn-sm">Open level</a>
+                    }
+                    else
+                    {
+                        <p class="text-muted">🔒 Complete @s.Level.Prerequisite first to unlock.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

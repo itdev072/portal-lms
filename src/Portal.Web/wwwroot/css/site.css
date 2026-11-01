@@ -1,0 +1,360 @@
+/* ============================================================
+   Portal — dark navy theme with a left sidebar, modeled on a
+   reference lecturer-portal screenshot the user shared (dark
+   navy background, blue accent, card-based dashboard, split-
+   screen login). Layered on top of Bootstrap 5's built-in
+   data-bs-theme="dark" palette (set on <html> in _Layout.cshtml),
+   which already reskins cards/tables/forms/alerts sensibly — this
+   file only overrides the accent color and adds the sidebar /
+   topbar / auth-screen layout Bootstrap doesn't provide.
+   ============================================================ */
+
+:root {
+  --pf-bg: #0a1120;
+  --pf-bg-elevated: #121d33;
+  --pf-bg-sidebar: #0b1526;
+  --pf-border: #223049;
+  --pf-text: #e8edf7;
+  --pf-text-muted: #8d9bb8;
+  --pf-accent: #2f6fed;
+  --pf-accent-hover: #2159c9;
+  --pf-accent-soft: rgba(47, 111, 237, 0.16);
+  --pf-success: #22c55e;
+  --pf-danger: #ef4444;
+  --pf-warning: #e0a62a;
+  --pf-radius: 0.65rem;
+}
+
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: "Segoe UI", Helvetica, Arial, "Noto Sans Khmer", sans-serif;
+  background: var(--pf-bg);
+  color: var(--pf-text);
+  margin-bottom: 0;
+}
+
+/* Khmer script needs its own line-height: Latin leading is too tight for the
+   stacked vowel/subscript marks and clips them. */
+[lang="km"], .km-text {
+  font-family: "Noto Sans Khmer", "Segoe UI", sans-serif;
+  line-height: 1.8;
+}
+
+a { color: var(--pf-accent); }
+a:hover { color: #6a9bff; }
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-select:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.2rem var(--pf-accent-soft);
+}
+
+.form-control, .form-select {
+  background-color: #0e1730;
+  border-color: var(--pf-border);
+  color: var(--pf-text);
+}
+.form-control:focus, .form-select:focus {
+  background-color: #0e1730;
+  border-color: var(--pf-accent);
+  color: var(--pf-text);
+}
+.form-control::placeholder { color: var(--pf-text-muted); }
+
+/* ---- accent recolor (Bootstrap hardcodes #0d6efd per-component rather
+   than deriving from one variable, so these are overridden directly) ---- */
+.btn-primary {
+  --bs-btn-bg: var(--pf-accent);
+  --bs-btn-border-color: var(--pf-accent);
+  --bs-btn-hover-bg: var(--pf-accent-hover);
+  --bs-btn-hover-border-color: var(--pf-accent-hover);
+  --bs-btn-active-bg: var(--pf-accent-hover);
+  --bs-btn-active-border-color: var(--pf-accent-hover);
+  --bs-btn-disabled-bg: var(--pf-accent);
+  --bs-btn-disabled-border-color: var(--pf-accent);
+}
+.btn-outline-primary {
+  --bs-btn-color: var(--pf-accent);
+  --bs-btn-border-color: var(--pf-accent);
+  --bs-btn-hover-bg: var(--pf-accent);
+  --bs-btn-hover-border-color: var(--pf-accent);
+  --bs-btn-active-bg: var(--pf-accent);
+  --bs-btn-active-border-color: var(--pf-accent);
+}
+.text-primary { color: var(--pf-accent) !important; }
+.bg-primary { background-color: var(--pf-accent) !important; }
+
+/* ---- cards & tables ---- */
+.card {
+  --bs-card-bg: var(--pf-bg-elevated);
+  --bs-card-border-color: var(--pf-border);
+  border-radius: var(--pf-radius);
+}
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--pf-text);
+  --bs-table-border-color: var(--pf-border);
+}
+.alert-info { --bs-alert-bg: rgba(47,111,237,.12); --bs-alert-border-color: rgba(47,111,237,.35); --bs-alert-color: #bcd2ff; }
+.alert-success { --bs-alert-bg: rgba(34,197,94,.12); --bs-alert-border-color: rgba(34,197,94,.35); --bs-alert-color: #a7f3c6; }
+.alert-danger { --bs-alert-bg: rgba(239,68,68,.12); --bs-alert-border-color: rgba(239,68,68,.35); --bs-alert-color: #fca5a5; }
+.alert-warning { --bs-alert-bg: rgba(224,166,42,.14); --bs-alert-border-color: rgba(224,166,42,.4); --bs-alert-color: #ffda9e; }
+code { color: #ffb55c; }
+
+/* ============================================================
+   App shell: sidebar + topbar + content, shown when signed in.
+   ============================================================ */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  flex: 0 0 240px;
+  width: 240px;
+  background: var(--pf-bg-sidebar);
+  border-right: 1px solid var(--pf-border);
+  display: flex;
+  flex-direction: column;
+  padding: 1.1rem 0.85rem;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.5rem 1.1rem;
+  text-decoration: none;
+}
+.sidebar-brand .brand-badge {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--pf-accent), #5b3df0);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: #fff; font-size: 1.05rem;
+  flex-shrink: 0;
+}
+.sidebar-brand .brand-text { font-weight: 700; color: var(--pf-text); font-size: 1.15rem; }
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: var(--pf-bg-elevated);
+  border: 1px solid var(--pf-border);
+  border-radius: var(--pf-radius);
+  padding: 0.6rem 0.7rem;
+  margin-bottom: 1rem;
+}
+.sidebar-user .avatar {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--pf-accent-soft);
+  color: var(--pf-accent);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.sidebar-user .user-name { font-size: 0.92rem; font-weight: 600; color: var(--pf-text); line-height: 1.2; }
+.sidebar-user .user-role { font-size: 0.78rem; color: var(--pf-text-muted); }
+
+.sidebar-nav { display: flex; flex-direction: column; gap: 0.2rem; flex: 1; }
+.sidebar-nav .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--pf-radius);
+  color: var(--pf-text-muted);
+  font-size: 0.92rem;
+  font-weight: 500;
+  transition: background-color .12s, color .12s;
+}
+.sidebar-nav .nav-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+.sidebar-nav .nav-link:hover { background: rgba(255,255,255,0.05); color: var(--pf-text); }
+.sidebar-nav .nav-link.active { background: var(--pf-accent); color: #fff; }
+
+.sidebar-logout { margin-top: auto; padding-top: 0.75rem; }
+.btn-logout {
+  width: 100%;
+  display: flex; align-items: center; gap: 0.6rem;
+  background: transparent;
+  border: 1px solid var(--pf-border);
+  color: #f3a9a9;
+  border-radius: var(--pf-radius);
+  padding: 0.55rem 0.7rem;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+.btn-logout:hover { background: rgba(239,68,68,.12); border-color: rgba(239,68,68,.4); color: #fca5a5; }
+.btn-logout svg { width: 18px; height: 18px; }
+
+.sidebar-toggle {
+  display: none;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  background: var(--pf-bg-sidebar);
+  border: none;
+  border-bottom: 1px solid var(--pf-border);
+  color: var(--pf-text);
+  font-weight: 700;
+  padding: 0.85rem 1rem;
+}
+.sidebar-toggle svg { width: 22px; height: 22px; }
+
+.main-col { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+.topbar {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--pf-border);
+  color: var(--pf-text-muted);
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.content-area { padding: 1.5rem; flex: 1; }
+
+.app-footer {
+  border-top: 1px solid var(--pf-border);
+  color: var(--pf-text-muted);
+  font-size: 0.85rem;
+  padding: 1rem 1.5rem;
+}
+.guest-footer { text-align: center; }
+
+@media (max-width: 767.98px) {
+  .sidebar-toggle { display: flex; }
+  .app-shell { flex-direction: column; }
+  .sidebar {
+    position: static;
+    height: auto;
+    width: 100%;
+    flex-basis: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--pf-border);
+  }
+  .sidebar.collapse:not(.show) { display: none; }
+}
+
+/* ============================================================
+   Guest screens (home / login / register) — no sidebar chrome,
+   full-bleed layout defined per-page.
+   ============================================================ */
+.guest-shell { min-height: calc(100vh - 53px); }
+
+/* Split-screen auth layout */
+.auth-split {
+  min-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+}
+.auth-left {
+  flex: 1 1 420px;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(47,111,237,.25), transparent 45%),
+    radial-gradient(circle at 85% 85%, rgba(91,61,240,.22), transparent 45%),
+    linear-gradient(160deg, #0b1526 0%, #0a1120 70%);
+  color: var(--pf-text);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 3.5rem;
+  position: relative;
+}
+.auth-left .brand-badge {
+  width: 64px; height: 64px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--pf-accent), #5b3df0);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 1.75rem; color: #fff;
+  margin-bottom: 1.5rem;
+}
+.auth-left h1 { font-weight: 700; font-size: 2.1rem; margin-bottom: 0.75rem; }
+.auth-left p { color: var(--pf-text-muted); max-width: 26rem; font-size: 1.02rem; }
+.auth-left .auth-features { margin-top: 2.25rem; display: flex; flex-direction: column; gap: 0.9rem; }
+.auth-left .auth-feature { display: flex; align-items: center; gap: 0.75rem; color: #c8d3e8; font-size: 0.95rem; }
+.auth-left .auth-feature svg { width: 20px; height: 20px; color: var(--pf-accent); flex-shrink: 0; }
+
+.auth-right {
+  flex: 1 1 380px;
+  background: var(--pf-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.75rem;
+}
+.auth-card { width: 100%; max-width: 380px; }
+.auth-card h2 { font-weight: 700; margin-bottom: 0.35rem; }
+.auth-card .auth-sub { color: var(--pf-text-muted); margin-bottom: 1.75rem; font-size: 0.95rem; }
+.auth-card label { font-size: 0.85rem; font-weight: 600; color: var(--pf-text-muted); margin-bottom: 0.3rem; }
+.auth-card .form-control { padding: 0.65rem 0.85rem; }
+.password-field { position: relative; }
+.password-field .form-control { padding-right: 2.6rem; }
+.password-toggle {
+  position: absolute;
+  right: 0.6rem; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: var(--pf-text-muted);
+  display: flex; padding: 0.25rem;
+}
+.password-toggle:hover { color: var(--pf-text); }
+.password-toggle svg { width: 19px; height: 19px; }
+.auth-card .btn-primary { width: 100%; padding: 0.65rem; font-weight: 600; }
+.auth-card .auth-switch { text-align: center; margin-top: 1.1rem; font-size: 0.9rem; color: var(--pf-text-muted); }
+.auth-demo-box {
+  margin-top: 1.5rem;
+  background: var(--pf-bg-elevated);
+  border: 1px solid var(--pf-border);
+  border-radius: var(--pf-radius);
+  padding: 0.85rem 1rem;
+  font-size: 0.82rem;
+  color: var(--pf-text-muted);
+}
+.auth-demo-box code { font-size: 0.8rem; }
+
+/* ---- stat cards used on dashboards ---- */
+.stat-card {
+  background: var(--pf-bg-elevated);
+  border: 1px solid var(--pf-border);
+  border-radius: var(--pf-radius);
+  padding: 1rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+.stat-card .stat-icon {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  background: var(--pf-accent-soft);
+  color: var(--pf-accent);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.stat-card .stat-icon svg { width: 22px; height: 22px; }
+.stat-card .stat-value { font-size: 1.5rem; font-weight: 700; line-height: 1; color: var(--pf-text); }
+.stat-card .stat-label { color: var(--pf-text-muted); font-size: 0.85rem; margin-top: 0.2rem; }
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}

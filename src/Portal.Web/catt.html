@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Take attendance - Portal</title>
+    
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/site.css?v=zeR5PHeeHbxfGkL8WV86OzdoF6UnjuCmnagaocD-cbo" />
+    <link rel="stylesheet" href="/Portal.Web.styles.css?v=W0ricmq0hPBkheMQomf95pt2Dm_YA78Bubx4wQbJUyk" />
+</head>
+<body>
+    <header b-n5gszefvmp>
+        <nav b-n5gszefvmp class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+            <div b-n5gszefvmp class="container-fluid">
+                <a class="navbar-brand" href="/">Portal</a>
+                <button b-n5gszefvmp class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span b-n5gszefvmp class="navbar-toggler-icon"></span>
+                </button>
+                <div b-n5gszefvmp class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul b-n5gszefvmp class="navbar-nav flex-grow-1">
+                            <li b-n5gszefvmp class="nav-item"><a class="nav-link text-light" href="/Teacher/Dashboard">Dashboard</a></li>
+                            <li b-n5gszefvmp class="nav-item"><a class="nav-link text-light" href="/Teacher/CreateAttendanceSession">Take Attendance</a></li>
+                            <li b-n5gszefvmp class="nav-item"><a class="nav-link text-light" href="/Teacher/CreateExam">New Exam</a></li>
+                    </ul>
+                    <ul b-n5gszefvmp class="navbar-nav">
+                            <li b-n5gszefvmp class="nav-item navbar-text text-light me-3">Kouet (Teacher) (Teacher)</li>
+                            <li b-n5gszefvmp class="nav-item">
+                                <form method="post" class="d-inline" action="/Account/Logout">
+                                    <button b-n5gszefvmp type="submit" class="btn btn-outline-light btn-sm">Log out</button>
+                                <input name="__RequestVerificationToken" type="hidden" value="CfDJ8H1lOphcEzZNiWYYCroV04HH_GyGSDCcXId4pnBu9xQYVKDyOA-oi56cv5UVNNA_7EiZhyR985ocFab5W9o3w2ClAfHOyT2nQCyd8eXAFOTCwGaYD0ZG7N_t208qTrRcPUUIgFdOaAHxcmziMSmDjumhVhcR1dx7XGxcYXAMROr3cAz-I2udcwvjgKqBYufiMw" /></form>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div b-n5gszefvmp class="container">
+        <main b-n5gszefvmp role="main" class="pb-3">
+            
+<h1>Take attendance</h1>
+<p class="text-muted">Opens a QR code students scan from their own phone. Their location is checked against the campus you pick, server-side — the QR code alone never marks anyone present.</p>
+
+<form method="post" action="/Teacher/CreateAttendanceSession">
+    <div class="mb-3">
+        <label class="form-label">Class</label>
+        <select name="ClassSectionId" class="form-select" required>
+                <option value="section-1">SPD Year 2 - Section A</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Campus location</label>
+        <select name="CampusLocationId" class="form-select" required>
+                <option value="campus-main">Main Campus - Building A (radius 120 m)</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Session valid for (minutes)</label>
+        <input name="ValidMinutes" class="form-control" type="number" value="10" min="1" max="180" />
+    </div>
+    <button type="submit" class="btn btn-primary">Open attendance session</button>
+<input name="__RequestVerificationToken" type="hidden" value="CfDJ8H1lOphcEzZNiWYYCroV04HH_GyGSDCcXId4pnBu9xQYVKDyOA-oi56cv5UVNNA_7EiZhyR985ocFab5W9o3w2ClAfHOyT2nQCyd8eXAFOTCwGaYD0ZG7N_t208qTrRcPUUIgFdOaAHxcmziMSmDjumhVhcR1dx7XGxcYXAMROr3cAz-I2udcwvjgKqBYufiMw" /></form>
+
+        </main>
+    </div>
+
+    <footer b-n5gszefvmp class="border-top footer text-muted">
+        <div b-n5gszefvmp class="container">
+            &copy; 2026 - Portal - C# Learning Management System
+        </div>
+    </footer>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/site.js?v=y_Ngd8W21UpuCUhEqGbUKDEqFnNfTjAfb24GhJJGUyM"></script>
+    
+</body>
+</html>

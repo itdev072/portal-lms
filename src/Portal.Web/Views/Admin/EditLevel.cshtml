@@ -1,0 +1,49 @@
+@model LevelFormViewModel
+@{
+    var isNew = string.IsNullOrEmpty(Model.Id);
+    ViewData["Title"] = isNew ? "New level" : "Edit level";
+}
+
+<h1>@(isNew ? "New level" : "Edit level")</h1>
+
+<form asp-controller="Admin" asp-action="@(isNew ? "CreateLevel" : "EditLevel")" method="post">
+    <div class="row mb-3">
+        <div class="col">
+            <label asp-for="Id" class="form-label">Id (e.g. CSK3)</label>
+            <input asp-for="Id" class="form-control" readonly="@(!isNew)" />
+        </div>
+        <div class="col">
+            <label asp-for="Order" class="form-label"></label>
+            <input asp-for="Order" class="form-control" type="number" />
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <label asp-for="NameKm" class="form-label"></label>
+            <input asp-for="NameKm" class="form-control" dir="auto" />
+        </div>
+        <div class="col">
+            <label asp-for="NameEn" class="form-label"></label>
+            <input asp-for="NameEn" class="form-control" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label asp-for="DescriptionKm" class="form-label"></label>
+        <textarea asp-for="DescriptionKm" class="form-control" rows="2" dir="auto"></textarea>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <label asp-for="SourceChaptersRaw" class="form-label">Source chapters (comma-separated)</label>
+            <input asp-for="SourceChaptersRaw" class="form-control" placeholder="1,2,3,4" />
+        </div>
+        <div class="col">
+            <label asp-for="Prerequisite" class="form-label">Prerequisite level Id (blank for none)</label>
+            <input asp-for="Prerequisite" class="form-control" />
+        </div>
+        <div class="col">
+            <label asp-for="EstimatedHours" class="form-label"></label>
+            <input asp-for="EstimatedHours" class="form-control" type="number" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

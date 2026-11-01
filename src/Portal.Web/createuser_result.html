@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Users - Portal</title>
+    
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/site.css?v=zeR5PHeeHbxfGkL8WV86OzdoF6UnjuCmnagaocD-cbo" />
+    <link rel="stylesheet" href="/Portal.Web.styles.css?v=W0ricmq0hPBkheMQomf95pt2Dm_YA78Bubx4wQbJUyk" />
+</head>
+<body>
+    <header b-n5gszefvmp>
+        <nav b-n5gszefvmp class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+            <div b-n5gszefvmp class="container-fluid">
+                <a class="navbar-brand" href="/">Portal</a>
+                <button b-n5gszefvmp class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span b-n5gszefvmp class="navbar-toggler-icon"></span>
+                </button>
+                <div b-n5gszefvmp class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul b-n5gszefvmp class="navbar-nav flex-grow-1">
+                            <li b-n5gszefvmp class="nav-item"><a class="nav-link text-light" href="/Admin/Dashboard">Dashboard</a></li>
+                            <li b-n5gszefvmp class="nav-item"><a class="nav-link text-light" href="/Admin/Users">Users</a></li>
+                            <li b-n5gszefvmp class="nav-item"><a class="nav-link text-light" href="/Admin/Levels">Levels</a></li>
+                    </ul>
+                    <ul b-n5gszefvmp class="navbar-nav">
+                            <li b-n5gszefvmp class="nav-item navbar-text text-light me-3">Admin (Admin)</li>
+                            <li b-n5gszefvmp class="nav-item">
+                                <form method="post" class="d-inline" action="/Account/Logout">
+                                    <button b-n5gszefvmp type="submit" class="btn btn-outline-light btn-sm">Log out</button>
+                                <input name="__RequestVerificationToken" type="hidden" value="CfDJ8H1lOphcEzZNiWYYCroV04ET_G38cSt7z47z50SM8BJMveoqknfrcm2fE31SW0vh3KJ_-fvTvpVoKwysZhx8YFgN96zIS-pxe7X0Q0X1gJ2vksGYDr7acFiKVfruIL5cUOj2FEDDa5c9yfkC-jyFtEw7I9-1pKo6MYAM_S_YJXlJdqFxjTxxOV6kCDc4OwZtdA" /></form>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div b-n5gszefvmp class="container">
+        <main b-n5gszefvmp role="main" class="pb-3">
+            
+<h1>Users</h1>
+<a class="btn btn-primary mb-3" href="/Admin/CreateUser">+ New user</a>
+
+<table class="table">
+    <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th></th></tr></thead>
+    <tbody>
+            <tr>
+                <td>Sok Dara</td>
+                <td>student@portal.local</td>
+                <td>
+                    <form method="post" class="d-flex gap-1" action="/Admin/ChangeRole">
+                        <input type="hidden" name="id" value="student-1" />
+                        <select name="role" class="form-select form-select-sm" onchange="this.form.submit()">
+                                    <option value="Student" selected>Student</option>
+                                    <option value="Teacher">Teacher</option>
+                                    <option value="Admin">Admin</option>
+                        </select>
+                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8H1lOphcEzZNiWYYCroV04ET_G38cSt7z47z50SM8BJMveoqknfrcm2fE31SW0vh3KJ_-fvTvpVoKwysZhx8YFgN96zIS-pxe7X0Q0X1gJ2vksGYDr7acFiKVfruIL5cUOj2FEDDa5c9yfkC-jyFtEw7I9-1pKo6MYAM_S_YJXlJdqFxjTxxOV6kCDc4OwZtdA" /></form>
+                </td>
+                <td>Active</td>
+                <td>
+                    <form method="post" action="/Admin/ToggleActive">
+                        <input type="hidden" name="id" value="student-1" />
+                        <button type="submit" class="btn btn-outline-secondary btn-sm">Deactivate</button>
+                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8H1lOphcEzZNiWYYCroV04ET_G38cSt7z47z50SM8BJMveoqknfrcm2fE31SW0vh3KJ_-fvTvpVoKwysZhx8YFgN96zIS-pxe7X0Q0X1gJ2vksGYDr7acFiKVfruIL5cUOj2FEDDa5c9yfkC-jyFtEw7I9-1pKo6MYAM_S_YJXlJdqFxjTxxOV6kCDc4OwZtdA" /></form>
+                </td>
+            </tr>
+            <tr>
+                <td>Kouet (Teacher)</td>
+                <td>teacher@portal.local</td>
+                <td>
+                    <form method="post" class="d-flex gap-1" action="/Admin/ChangeRole">
+                        <input type="hidden" name="id" value="teacher-1" />
+                        <select name="role" class="form-select form-select-sm" onchange="this.form.submit()">
+                                    <option value="Student">Student</option>
+                                    <option value="Teacher" selected>Teacher</option>
+                                    <option value="Admin">Admin</option>
+                        </select>
+                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8H1lOphcEzZNiWYYCroV04ET_G38cSt7z47z50SM8BJMveoqknfrcm2fE31SW0vh3KJ_-fvTvpVoKwysZhx8YFgN96zIS-pxe7X0Q0X1gJ2vksGYDr7acFiKVfruIL5cUOj2FEDDa5c9yfkC-jyFtEw7I9-1pKo6MYAM_S_YJXlJdqFxjTxxOV6kCDc4OwZtdA" /></form>
+                </td>
+                <td>Active</td>
+                <td>
+                    <form method="post" action="/Admin/ToggleActive">
+                        <input type="hidden" name="id" value="teacher-1" />
+                        <button type="submit" class="btn btn-outline-secondary btn-sm">Deactivate</button>
+                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8H1lOphcEzZNiWYYCroV04ET_G38cSt7z47z50SM8BJMveoqknfrcm2fE31SW0vh3KJ_-fvTvpVoKwysZhx8YFgN96zIS-pxe7X0Q0X1gJ2vksGYDr7acFiKVfruIL5cUOj2FEDDa5c9yfkC-jyFtEw7I9-1pKo6MYAM_S_YJXlJdqFxjTxxOV6kCDc4OwZtdA" /></form>
+                </td>
+            </tr>
+            <tr>
+                <td>New Teacher</td>
+                <td>newteacher@portal.local</td>
+                <td>
+                    <form method="post" class="d-flex gap-1" action="/Admin/ChangeRole">
+                        <input type="hidden" name="id" value="63e9ab9c2d91457eb169063614e9814a" />
+                        <select name="role" class="form-select form-select-sm" onchange="this.form.submit()">
+                                    <option value="Student">Student</option>
+                                    <option value="Teacher" selected>Teacher</option>
+                                    <option value="Admin">Admin</option>
+                        </select>
+                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8H1lOphcEzZNiWYYCroV04ET_G38cSt7z47z50SM8BJMveoqknfrcm2fE31SW0vh3KJ_-fvTvpVoKwysZhx8YFgN96zIS-pxe7X0Q0X1gJ2vksGYDr7acFiKVfruIL5cUOj2FEDDa5c9yfkC-jyFtEw7I9-1pKo6MYAM_S_YJXlJdqFxjTxxOV6kCDc4OwZtdA" /></form>
+                </td>
+                <td>Active</td>
+                <td>
+                    <form method="post" action="/Admin/ToggleActive">
+                        <input type="hidden" name="id" value="63e9ab9c2d91457eb169063614e9814a" />
+                        <button type="submit" class="btn btn-outline-secondary btn-sm">Deactivate</button>
+                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8H1lOphcEzZNiWYYCroV04ET_G38cSt7z47z50SM8BJMveoqknfrcm2fE31SW0vh3KJ_-fvTvpVoKwysZhx8YFgN96zIS-pxe7X0Q0X1gJ2vksGYDr7acFiKVfruIL5cUOj2FEDDa5c9yfkC-jyFtEw7I9-1pKo6MYAM_S_YJXlJdqFxjTxxOV6kCDc4OwZtdA" /></form>
+                </td>
+            </tr>
+            <tr>
+                <td>Admin</td>
+                <td>admin@portal.local</td>
+                <td>
+                    <form method="post" class="d-flex gap-1" action="/Admin/ChangeRole">
+                        <input type="hidden" name="id" value="admin-1" />
+                        <select name="role" class="form-select form-select-sm" onchange="this.form.submit()">
+                                    <option value="Student">Student</option>
+                                    <option value="Teacher">Teacher</option>
+                                    <option value="Admin" selected>Admin</option>
+                        </select>
+                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8H1lOphcEzZNiWYYCroV04ET_G38cSt7z47z50SM8BJMveoqknfrcm2fE31SW0vh3KJ_-fvTvpVoKwysZhx8YFgN96zIS-pxe7X0Q0X1gJ2vksGYDr7acFiKVfruIL5cUOj2FEDDa5c9yfkC-jyFtEw7I9-1pKo6MYAM_S_YJXlJdqFxjTxxOV6kCDc4OwZtdA" /></form>
+                </td>
+                <td>Active</td>
+                <td>
+                    <form method="post" action="/Admin/ToggleActive">
+                        <input type="hidden" name="id" value="admin-1" />
+                        <button type="submit" class="btn btn-outline-secondary btn-sm">Deactivate</button>
+                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8H1lOphcEzZNiWYYCroV04ET_G38cSt7z47z50SM8BJMveoqknfrcm2fE31SW0vh3KJ_-fvTvpVoKwysZhx8YFgN96zIS-pxe7X0Q0X1gJ2vksGYDr7acFiKVfruIL5cUOj2FEDDa5c9yfkC-jyFtEw7I9-1pKo6MYAM_S_YJXlJdqFxjTxxOV6kCDc4OwZtdA" /></form>
+                </td>
+            </tr>
+    </tbody>
+</table>
+
+        </main>
+    </div>
+
+    <footer b-n5gszefvmp class="border-top footer text-muted">
+        <div b-n5gszefvmp class="container">
+            &copy; 2026 - Portal - C# Learning Management System
+        </div>
+    </footer>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/site.js?v=y_Ngd8W21UpuCUhEqGbUKDEqFnNfTjAfb24GhJJGUyM"></script>
+    
+</body>
+</html>

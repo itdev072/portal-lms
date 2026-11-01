@@ -1,0 +1,60 @@
+@model AttendanceSessionViewModel
+@{
+    ViewData["Title"] = "Attendance session";
+}
+
+<h1>Attendance: @Model.Section.Name</h1>
+<p class="text-muted">
+    Campus: @Model.Campus.Name (radius @Model.Campus.RadiusMeters m) &middot;
+    Expires @Model.Session.ExpiresAt.ToString("h:mm tt")
+    @(Model.Session.IsClosed ? " — CLOSED" : "")
+</p>
+
+<div class="row">
+    <div class="col-md-4 text-center">
+        <canvas id="attendance-qr" data-checkin-url="@Model.CheckInUrl"></canvas>
+        <p id="attendance-qr-fallback" style="display:none" class="text-danger">
+            QR render failed — share this link directly: <br /><code>@Model.CheckInUrl</code>
+        </p>
+        <p class="text-muted small mt-2">Students scan this with their phone camera.</p>
+
+        @if (!Model.Session.IsClosed)
+        {
+            <form asp-controller="Teacher" asp-action="CloseAttendanceSession" method="post">
+                <input type="hidden" name="id" value="@Model.Session.Id" />
+                <button type="submit" class="btn btn-outline-danger btn-sm mt-2">Close session</button>
+            </form>
+        }
+    </div>
+    <div class="col-md-8">
+        <h2>Checked in (@Model.Records.Count(r => r.Record.Status == AttendanceStatus.Present))</h2>
+        <table class="table" id="attendance-record-list">
+            <thead><tr><th>Student</th><th>Status</th><th>Distance</th><th>Time</th></tr></thead>
+            <tbody>
+                @foreach (var r in Model.Records)
+                {
+                    <tr>
+                        <td>@r.StudentName</td>
+                        <td>
+                            @if (r.Record.Status == AttendanceStatus.Present)
+                            {
+                                <span class="badge bg-success">Present</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">@r.Record.Status</span>
+                            }
+                        </td>
+                        <td>@r.Record.DistanceMeters m</td>
+                        <td>@r.Record.ScannedAt.ToString("h:mm:ss tt")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/qrcode/qrcode.min.js"></script>
+    <script src="~/js/attendance-teacher.js" asp-append-version="true"></script>
+}

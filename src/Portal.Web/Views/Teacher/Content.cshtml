@@ -1,0 +1,58 @@
+@model ContentListViewModel
+@{
+    ViewData["Title"] = "Content: " + Model.Level.Id;
+}
+
+<a asp-controller="Teacher" asp-action="Dashboard">&larr; Back to dashboard</a>
+<h1>@Model.Level.Id — @Model.Level.NameEn</h1>
+
+<h2>Lessons</h2>
+<a asp-controller="Teacher" asp-action="CreateLesson" asp-route-levelId="@Model.Level.Id" class="btn btn-primary btn-sm mb-2">+ New lesson</a>
+<ul class="list-group mb-4">
+    @foreach (var lesson in Model.Lessons)
+    {
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>@lesson.Order. @lesson.TitleEn</span>
+            <span>
+                <a asp-controller="Teacher" asp-action="EditLesson" asp-route-id="@lesson.Id" class="btn btn-outline-secondary btn-sm">Edit</a>
+                <a asp-controller="Teacher" asp-action="CreateQuiz" asp-route-levelId="@Model.Level.Id" asp-route-lessonId="@lesson.Id" class="btn btn-outline-primary btn-sm">+ Quiz</a>
+                <a asp-controller="Teacher" asp-action="CreateChallenge" asp-route-levelId="@Model.Level.Id" asp-route-lessonId="@lesson.Id" class="btn btn-outline-primary btn-sm">+ Challenge</a>
+                <form asp-controller="Teacher" asp-action="DeleteLesson" method="post" class="d-inline">
+                    <input type="hidden" name="id" value="@lesson.Id" />
+                    <input type="hidden" name="levelId" value="@Model.Level.Id" />
+                    <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Delete this lesson?')">Delete</button>
+                </form>
+            </span>
+        </li>
+    }
+</ul>
+
+<h2>Quiz items</h2>
+<ul class="list-group mb-4">
+    @foreach (var q in Model.QuizItems)
+    {
+        <li class="list-group-item d-flex justify-content-between align-items-center" dir="auto">
+            <span>@q.QuestionKm</span>
+            <form asp-controller="Teacher" asp-action="DeleteQuiz" method="post">
+                <input type="hidden" name="id" value="@q.Id" />
+                <input type="hidden" name="levelId" value="@Model.Level.Id" />
+                <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Delete?')">Delete</button>
+            </form>
+        </li>
+    }
+</ul>
+
+<h2>Coding challenges</h2>
+<ul class="list-group">
+    @foreach (var c in Model.Challenges)
+    {
+        <li class="list-group-item d-flex justify-content-between align-items-center" dir="auto">
+            <span>@c.PromptKm</span>
+            <form asp-controller="Teacher" asp-action="DeleteChallenge" method="post">
+                <input type="hidden" name="id" value="@c.Id" />
+                <input type="hidden" name="levelId" value="@Model.Level.Id" />
+                <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Delete?')">Delete</button>
+            </form>
+        </li>
+    }
+</ul>

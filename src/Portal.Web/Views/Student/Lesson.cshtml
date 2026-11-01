@@ -1,0 +1,73 @@
+@model LessonDetailViewModel
+@{
+    ViewData["Title"] = Model.Lesson.TitleEn;
+}
+
+<a asp-controller="Student" asp-action="Level" asp-route-id="@Model.Level.Id">&larr; Back to @Model.Level.Id</a>
+<h1>@Model.Lesson.TitleEn</h1>
+<p class="text-muted" dir="auto">@Model.Lesson.TitleKm</p>
+
+@if (Model.Lesson.KeyTerms.Any())
+{
+    <p>
+        <strong>Key terms:</strong>
+        @foreach (var kt in Model.Lesson.KeyTerms)
+        {
+            <span class="badge bg-light text-dark border me-1" dir="auto">@kt.Km (@kt.En)</span>
+        }
+    </p>
+}
+
+<div class="card mb-3">
+    <div class="card-body" dir="auto">
+        <p>@Model.Lesson.ExplainerMd</p>
+        @foreach (var ex in Model.Lesson.CodeExamples)
+        {
+            <p class="text-muted mb-1">@ex.Caption</p>
+            <pre class="bg-dark text-light p-3 rounded"><code>@ex.Code</code></pre>
+        }
+    </div>
+</div>
+
+@if (Model.QuizItems.Any())
+{
+    <h2>Quiz</h2>
+    @foreach (var quiz in Model.QuizItems)
+    {
+        <div class="card mb-3">
+            <div class="card-body" dir="auto">
+                <p class="fw-bold">@quiz.QuestionKm</p>
+                <form asp-controller="Student" asp-action="SubmitQuiz" method="post">
+                    <input type="hidden" name="quizId" value="@quiz.Id" />
+                    @for (var i = 0; i < quiz.Options.Count; i++)
+                    {
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="selectedIndex" id="@(quiz.Id)-@i" value="@i" required />
+                            <label class="form-check-label" for="@(quiz.Id)-@i">@quiz.Options[i]</label>
+                        </div>
+                    }
+                    <button type="submit" class="btn btn-primary btn-sm mt-2">Submit answer</button>
+                </form>
+            </div>
+        </div>
+    }
+}
+
+@if (Model.Challenge != null)
+{
+    <h2>Coding Challenge</h2>
+    <div class="card mb-3">
+        <div class="card-body" dir="auto">
+            <p class="fw-bold">@Model.Challenge.PromptKm</p>
+            <pre class="bg-dark text-light p-3 rounded"><code>@Model.Challenge.StarterCode</code></pre>
+            <form asp-controller="Student" asp-action="SubmitChallenge" method="post">
+                <input type="hidden" name="challengeId" value="@Model.Challenge.Id" />
+                <div class="mb-2">
+                    <label class="form-label">What does this program print?</label>
+                    <input type="text" name="submittedOutput" class="form-control" required />
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+            </form>
+        </div>
+    </div>
+}

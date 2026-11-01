@@ -1,0 +1,48 @@
+@model CreateExamViewModel
+@{
+    ViewData["Title"] = "New exam";
+}
+
+<h1>New midterm exam</h1>
+
+<form asp-controller="Teacher" asp-action="CreateExam" method="post">
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <label class="form-label">Class</label>
+            <select name="ClassSectionId" class="form-select" required>
+                @foreach (var s in Model.Sections)
+                {
+                    <option value="@s.Id">@s.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col">
+            <label class="form-label">Level covered</label>
+            <select name="LevelId" class="form-select" required>
+                @foreach (var l in Model.Levels)
+                {
+                    <option value="@l.Id">@l.Id — @l.NameEn</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <label asp-for="TimeLimitMinutes" class="form-label"></label>
+            <input asp-for="TimeLimitMinutes" class="form-control" type="number" />
+        </div>
+        <div class="col">
+            <label asp-for="OpensAt" class="form-label"></label>
+            <input asp-for="OpensAt" class="form-control" type="datetime-local" />
+        </div>
+        <div class="col">
+            <label asp-for="ClosesAt" class="form-label"></label>
+            <input asp-for="ClosesAt" class="form-control" type="datetime-local" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Create exam (draft)</button>
+</form>

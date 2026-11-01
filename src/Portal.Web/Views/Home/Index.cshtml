@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Portal";
+}
+
+<div class="d-flex justify-content-between align-items-center px-4 px-md-5 py-4">
+    <a asp-controller="Home" asp-action="Index" class="d-flex align-items-center gap-2 text-decoration-none">
+        <span class="brand-badge" style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg, var(--pf-accent), #5b3df0);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;">P</span>
+        <span class="fw-bold fs-5" style="color: var(--pf-text);">Portal</span>
+    </a>
+    <div class="d-flex gap-2">
+        <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary btn-sm">Log in</a>
+        <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-sm">Register</a>
+    </div>
+</div>
+
+<div class="px-4 py-5 text-center">
+    <h1 class="display-5 fw-bold">Portal</h1>
+    <p class="lead col-lg-8 mx-auto" style="color: var(--pf-text-muted);">
+        A learning management app for the "Software Project Development" C# course — lessons, quizzes,
+        coding challenges, midterm exams, and QR + location-verified attendance, for students, teachers, and admins.
+    </p>
+    @if (User.Identity?.IsAuthenticated != true)
+    {
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+            <a asp-controller="Account" asp-action="Login" class="btn btn-primary btn-lg px-4 gap-3">Log in</a>
+            <a asp-controller="Account" asp-action="Register" class="btn btn-outline-secondary btn-lg px-4">Register as a student</a>
+        </div>
+        <div class="alert alert-info col-lg-6 mx-auto">
+            Demo accounts (password <code>Passw0rd!</code>): <code>admin@portal.local</code>,
+            <code>teacher@portal.local</code>, <code>student@portal.local</code>.
+        </div>
+    }
+</div>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { QRCodeSVG } from "qrcode.react";
 import { api } from "../../lib/api";
 import { PageHeader, Card, Badge, Spinner } from "../../components/ui/Primitives";
 
@@ -59,11 +60,11 @@ export default function TeacherClassDetail() {
               Token <code className="text-slate-300">{session.token}</code> · expires {new Date(session.expiresAt).toLocaleTimeString()}
             </div>
             <div className="mt-1 text-xs text-slate-500">
-              Students scan this from their Portal account at: {session.checkInPath}
+              Students scan this from the "Scan attendance" page in their own Portal account.
             </div>
           </div>
           <div className="rounded-xl bg-white p-3">
-            <QrPlaceholder value={session.token} />
+            <QRCodeSVG value={session.token} size={128} />
           </div>
         </Card>
       )}
@@ -106,19 +107,6 @@ export default function TeacherClassDetail() {
           ))}
         </div>
       </Card>
-    </div>
-  );
-}
-
-// A lightweight, dependency-free QR placeholder rendered as a stylized grid — swapped
-// for a real scannable code once a QR rendering library is wired in (phase 2).
-function QrPlaceholder({ value }) {
-  const cells = Array.from(value).slice(0, 64);
-  return (
-    <div className="grid grid-cols-8 gap-0.5" title={value}>
-      {cells.map((ch, i) => (
-        <div key={i} className={`h-2.5 w-2.5 ${ch.charCodeAt(0) % 2 === 0 ? "bg-black" : "bg-white"}`} />
-      ))}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../../lib/api";
 import { PageHeader, Table, Modal, Alert } from "../../components/ui/Primitives";
+import MapPicker from "../../components/MapPicker";
 
 const EMPTY = { name: "", latitude: 11.5564, longitude: 104.9282, radiusMeters: 100 };
 
@@ -36,7 +37,7 @@ export default function AdminLocations() {
         action={<button className="btn-primary" onClick={() => setModal({ ...EMPTY, _isNew: true })}>+ New location</button>}
       />
       <div className="mb-4 rounded-xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-sm text-amber-300">
-        📍 These coordinates power the geofenced attendance check. A visual map picker (Google Maps) is coming in the next phase — for now, enter coordinates directly.
+        📍 These coordinates power the geofenced attendance check. Drag the pin on the map (or click anywhere on it) to set a location — free OpenStreetMap tiles, no API key needed. Swap in real Google Maps later by supplying an API key.
       </div>
       <Table
         columns={["Name", "Latitude", "Longitude", "Radius", ""]}
@@ -54,7 +55,7 @@ export default function AdminLocations() {
           </>
         )}
       />
-      <Modal open={!!modal} onClose={() => setModal(null)} title={modal?._isNew ? "New location" : "Edit location"}>
+      <Modal open={!!modal} onClose={() => setModal(null)} title={modal?._isNew ? "New location" : "Edit location"} wide>
         {modal && <LocationForm initial={modal} onSave={save} error={error} />}
       </Modal>
     </div>
@@ -64,6 +65,8 @@ export default function AdminLocations() {
 function LocationForm({ initial, onSave, error }) {
   const [form, setForm] = useState(initial);
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+  const setLatLng = (lat, lng) => setForm((f) => ({ ...f, latitude: lat, longitude: lng }));
+
   return (
     <form onSubmit={(e) => { e.preventDefault(); onSave(form); }} className="space-y-4">
       {error && <Alert>{error}</Alert>}
@@ -71,6 +74,12 @@ function LocationForm({ initial, onSave, error }) {
         <label className="label">Location name</label>
         <input className="input" value={form.name} onChange={set("name")} required placeholder="e.g. Main Campus - Building A" />
       </div>
+
+      <div>
+        <label className="label">Drag the pin, or click the map, to set the location</label>
+        <MapPicker lat={form.latitude} lng={form.longitude} radiusMeters={form.radiusMeters} onChange={setLatLng} />
+      </div>
+
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="label">Latitude</label>

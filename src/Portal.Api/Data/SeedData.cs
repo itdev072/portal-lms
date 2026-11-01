@@ -13,6 +13,13 @@ namespace Portal.Api.Data;
 /// </summary>
 public static class SeedData
 {
+    /// <summary>
+    /// Freely-licensed (Creative Commons) sample video used to wire up the course-player
+    /// feature end to end. Swap for real lecture footage per-lesson once available —
+    /// VideoUrl is a plain string field, so this is a drop-in replacement later.
+    /// </summary>
+    private const string SampleVideo = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+
     public static void EnsureSeeded(AppData data)
     {
         var hasher = new PasswordHasher<ApplicationUser>();
@@ -160,7 +167,10 @@ public static class SeedData
                 new() { Caption = "Hello World", Code = "using System;\n\nConsole.WriteLine(\"Hello, World!\");" }
             },
             XpValue = 10,
-            EstimatedMinutes = 15
+            EstimatedMinutes = 15,
+            VideoUrl = SampleVideo,
+            DurationSeconds = 320,
+            ResourcesMd = "- [.NET docs: Introduction to C#](https://learn.microsoft.com/dotnet/csharp/)\n- Slides: Lesson 1 — Intro to C# & .NET"
         };
         var lesson2 = new Lesson
         {
@@ -176,9 +186,97 @@ public static class SeedData
                 new() { Caption = "Declaring variables", Code = "int age = 20;\nstring name = \"Dara\";\nConsole.WriteLine($\"{name} is {age} years old\");" }
             },
             XpValue = 10,
-            EstimatedMinutes = 20
+            EstimatedMinutes = 20,
+            VideoUrl = SampleVideo,
+            DurationSeconds = 410,
+            ResourcesMd = "- [C# type reference](https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/built-in-types)"
         };
-        data.Lessons.SeedIfEmpty(new[] { lesson1, lesson2 });
+        var lesson3 = new Lesson
+        {
+            Id = "CSK1-L03", LevelId = "CSK1", Order = 3,
+            TitleKm = "ប្រមាណវិធី និងកន្សោម", TitleEn = "Operators and Expressions",
+            KeyTerms = new() { new() { Km = "ប្រមាណវិធី", En = "operator" }, new() { Km = "កន្សោម", En = "expression" } },
+            ExplainerMd = "C# មានប្រមាណវិធីនព្វន្ធ (+, -, *, /, %), ប្រមាណវិធីប្រៀបធៀប និងតក្កវិជ្ជា។ លំដាប់អាទិភាពកំណត់លំដាប់នៃការគណនា។",
+            CodeExamples = new() { new() { Caption = "Arithmetic", Code = "int a = 10, b = 3;\nConsole.WriteLine(a % b); // 1" } },
+            XpValue = 10, EstimatedMinutes = 18, VideoUrl = SampleVideo, DurationSeconds = 280
+        };
+        var lesson4 = new Lesson
+        {
+            Id = "CSK1-L04", LevelId = "CSK1", Order = 4,
+            TitleKm = "ការបញ្ចូល និងបញ្ចេញទិន្នន័យ", TitleEn = "Console Input and Output",
+            KeyTerms = new() { new() { Km = "ការបញ្ចូល", En = "input" } },
+            ExplainerMd = "Console.ReadLine() អានអត្ថបទពីអ្នកប្រើប្រាស់។ ត្រូវបម្លែង (parse) ទៅជាប្រភេទលេខប្រសិនបើត្រូវការគណនា។",
+            CodeExamples = new() { new() { Caption = "Reading input", Code = "Console.Write(\"Enter your age: \");\nint age = int.Parse(Console.ReadLine());" } },
+            XpValue = 10, EstimatedMinutes = 15, VideoUrl = SampleVideo, DurationSeconds = 240
+        };
+        var lesson5 = new Lesson
+        {
+            Id = "CSK1-L05", LevelId = "CSK1", Order = 5,
+            TitleKm = "ការអនុវត្តន៍: កម្មវិធីគណនាសាមញ្ញ", TitleEn = "Practice: A Simple Calculator",
+            KeyTerms = new(),
+            ExplainerMd = "រួមបញ្ចូលគ្នានូវអថេរ ប្រមាណវិធី និងការបញ្ចូលទិន្នន័យ ដើម្បីសាងសង់កម្មវិធីគណនាសាមញ្ញមួយ។",
+            CodeExamples = new() { new() { Caption = "Calculator skeleton", Code = "double x = 4, y = 2;\nConsole.WriteLine(x + y);\nConsole.WriteLine(x - y);" } },
+            XpValue = 15, EstimatedMinutes = 25, VideoUrl = SampleVideo, DurationSeconds = 360
+        };
+
+        var csk2L1 = new Lesson
+        {
+            Id = "CSK2-L01", LevelId = "CSK2", Order = 1,
+            TitleKm = "លក្ខខណ្ឌ if / else", TitleEn = "Conditionals: if / else",
+            KeyTerms = new() { new() { Km = "លក្ខខណ្ឌ", En = "condition" } },
+            ExplainerMd = "ប្រយោគ if អនុញ្ញាតឱ្យកម្មវិធីសម្រេចចិត្តផ្អែកលើលក្ខខណ្ឌ true/false។",
+            CodeExamples = new() { new() { Caption = "if/else", Code = "int score = 85;\nif (score >= 50) Console.WriteLine(\"Pass\");\nelse Console.WriteLine(\"Fail\");" } },
+            XpValue = 10, EstimatedMinutes = 20, VideoUrl = SampleVideo, DurationSeconds = 300
+        };
+        var csk2L2 = new Lesson
+        {
+            Id = "CSK2-L02", LevelId = "CSK2", Order = 2,
+            TitleKm = "រង្វិលជុំ for និង while", TitleEn = "Loops: for and while",
+            KeyTerms = new() { new() { Km = "រង្វិលជុំ", En = "loop" } },
+            ExplainerMd = "រង្វិលជុំ for ល្អសម្រាប់ចំនួនដងដែលដឹងស្រាប់ ចំណែក while ល្អសម្រាប់លក្ខខណ្ឌមិនទៀង។",
+            CodeExamples = new() { new() { Caption = "for loop", Code = "for (int i = 1; i <= 5; i++)\n    Console.WriteLine(i);" } },
+            XpValue = 10, EstimatedMinutes = 22, VideoUrl = SampleVideo, DurationSeconds = 340
+        };
+        var csk2L3 = new Lesson
+        {
+            Id = "CSK2-L03", LevelId = "CSK2", Order = 3,
+            TitleKm = "អារេ (Arrays)", TitleEn = "Arrays",
+            KeyTerms = new() { new() { Km = "អារេ", En = "array" } },
+            ExplainerMd = "អារេផ្ទុកធាតុច្រើនក្នុងអថេរតែមួយ ចូលប្រើតាមលិបិក្រម (index) ចាប់ពី 0។",
+            CodeExamples = new() { new() { Caption = "Array basics", Code = "int[] scores = { 90, 85, 77 };\nConsole.WriteLine(scores[0]);" } },
+            XpValue = 10, EstimatedMinutes = 20, VideoUrl = SampleVideo, DurationSeconds = 310
+        };
+
+        var webL1 = new Lesson
+        {
+            Id = "WEB1-L01", LevelId = "WEB1", Order = 1,
+            TitleKm = "សេចក្តីផ្តើម React Components", TitleEn = "Introduction to React Components",
+            KeyTerms = new() { new() { Km = "សមាសភាគ", En = "component" } },
+            ExplainerMd = "React UI ត្រូវបានសាងសង់ពី components តូចៗ ដែលអាចប្រើឡើងវិញបាន។",
+            CodeExamples = new() { new() { Caption = "A component", Code = "function Hello() {\n  return <h1>Hello!</h1>;\n}" } },
+            XpValue = 10, EstimatedMinutes = 18, VideoUrl = SampleVideo, DurationSeconds = 300
+        };
+        var webL2 = new Lesson
+        {
+            Id = "WEB1-L02", LevelId = "WEB1", Order = 2,
+            TitleKm = "Props និង State", TitleEn = "Props and State",
+            KeyTerms = new() { new() { Km = "ស្ថានភាព", En = "state" } },
+            ExplainerMd = "Props ជាទិន្នន័យបញ្ជូនចូល component ចំណែក state ជាទិន្នន័យខាងក្នុងដែលអាចផ្លាស់ប្តូរបាន។",
+            CodeExamples = new() { new() { Caption = "useState", Code = "const [count, setCount] = useState(0);" } },
+            XpValue = 10, EstimatedMinutes = 22, VideoUrl = SampleVideo, DurationSeconds = 330
+        };
+
+        var dataL1 = new Lesson
+        {
+            Id = "DATA1-L01", LevelId = "DATA1", Order = 1,
+            TitleKm = "រចនាសម្ព័ន្ធទិន្នន័យជាមូលដ្ឋាន", TitleEn = "Basic Data Structures",
+            KeyTerms = new() { new() { Km = "បញ្ជី", En = "list" } },
+            ExplainerMd = "List, Dictionary ជារចនាសម្ព័ន្ធទិន្នន័យសំខាន់ៗសម្រាប់រៀបចំព័ត៌មាន។",
+            CodeExamples = new() { new() { Caption = "List basics", Code = "var names = new List<string> { \"A\", \"B\" };" } },
+            XpValue = 10, EstimatedMinutes = 20, VideoUrl = SampleVideo, DurationSeconds = 290
+        };
+
+        data.Lessons.SeedIfEmpty(new[] { lesson1, lesson2, lesson3, lesson4, lesson5, csk2L1, csk2L2, csk2L3, webL1, webL2, dataL1 });
 
         var quiz1 = new QuizItem
         {

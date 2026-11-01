@@ -84,6 +84,33 @@ public class ClassesController : ApiControllerBase
         return Ok(mine);
     }
 
+    /// <summary>A teacher creates their own new class — course + shift + a campus
+    /// location (new or existing). TeacherId is always the signed-in teacher, never
+    /// taken from the request, so a teacher can't assign classes to someone else.</summary>
+    [HttpPost("teacher/classes")]
+    [Authorize(Roles = "Teacher")]
+    public IActionResult CreateMine(ClassSaveRequest req)
+    {
+        var cls = new ClassSection
+        {
+            Name = req.Name,
+            TeacherId = CurrentUserId!,
+            SemesterLabel = req.SemesterLabel,
+            LevelId = req.LevelId,
+            ShiftId = req.ShiftId,
+            CampusLocationId = req.CampusLocationId,
+            Capacity = req.Capacity
+        };
+        Data.ClassSections.Upsert(cls);
+        return Ok(ToDto(cls));
+    }
+
+    /// <summary>Published courses — for the teacher's own "create class" course dropdown.</summary>
+    [HttpGet("teacher/courses")]
+    [Authorize(Roles = "Teacher")]
+    public IActionResult CoursesForTeacher()
+        => Ok(Data.Levels.Where(l => l.IsPublished).OrderBy(l => l.Order));
+
     [HttpGet("teacher/classes/{id}/roster")]
     [Authorize(Roles = "Teacher,Admin")]
     public IActionResult Roster(string id)

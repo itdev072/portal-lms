@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { api } from "../../lib/api";
-import { PageHeader, StatCard, Card, Spinner } from "../../components/ui/Primitives";
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, BarChart, Bar } from "recharts";
+import { PageHeader, StatCard, Card, Spinner, EmptyState } from "../../components/ui/Primitives";
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, BarChart, Bar, PieChart, Pie, Cell, Legend } from "recharts";
+
+const PIE_COLORS = ["#6366f1", "#8b5cf6", "#ec4899", "#f59e0b", "#10b981"];
 
 export default function AdminOverview() {
   const [stats, setStats] = useState(null);
@@ -63,6 +65,55 @@ export default function AdminOverview() {
               <Bar dataKey="enrolled" fill="#8b5cf6" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
+        </Card>
+      </div>
+
+      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <Card>
+          <h3 className="mb-4 font-display text-sm font-semibold text-white">Users by role</h3>
+          <ResponsiveContainer width="100%" height={200}>
+            <PieChart>
+              <Pie data={stats.usersByRole} dataKey="count" nameKey="role" innerRadius={45} outerRadius={75} paddingAngle={2}>
+                {stats.usersByRole.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
+              </Pie>
+              <Tooltip contentStyle={{ background: "#141927", border: "1px solid #232a3d", borderRadius: 12, fontSize: 13 }} />
+              <Legend wrapperStyle={{ fontSize: 12 }} />
+            </PieChart>
+          </ResponsiveContainer>
+        </Card>
+
+        <Card>
+          <h3 className="mb-4 font-display text-sm font-semibold text-white">Attendance status (all-time)</h3>
+          {stats.statusBreakdown.length === 0 ? (
+            <EmptyState icon="🗓️" title="No attendance recorded yet" />
+          ) : (
+            <ResponsiveContainer width="100%" height={200}>
+              <PieChart>
+                <Pie data={stats.statusBreakdown} dataKey="count" nameKey="status" innerRadius={45} outerRadius={75} paddingAngle={2}>
+                  {stats.statusBreakdown.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
+                </Pie>
+                <Tooltip contentStyle={{ background: "#141927", border: "1px solid #232a3d", borderRadius: 12, fontSize: 13 }} />
+                <Legend wrapperStyle={{ fontSize: 12 }} />
+              </PieChart>
+            </ResponsiveContainer>
+          )}
+        </Card>
+
+        <Card>
+          <h3 className="mb-4 font-display text-sm font-semibold text-white">Revenue by course</h3>
+          {stats.revenueByCourse.length === 0 ? (
+            <EmptyState icon="💵" title="No revenue yet" subtitle="Revenue appears once students enroll in a paid course." />
+          ) : (
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart data={stats.revenueByCourse} layout="vertical" margin={{ left: 8 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#232a3d" horizontal={false} />
+                <XAxis type="number" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis type="category" dataKey="nameEn" stroke="#64748b" fontSize={11} width={100} tickLine={false} axisLine={false} />
+                <Tooltip contentStyle={{ background: "#141927", border: "1px solid #232a3d", borderRadius: 12, fontSize: 13 }} />
+                <Bar dataKey="revenue" fill="#10b981" radius={[0, 6, 6, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          )}
         </Card>
       </div>
     </div>

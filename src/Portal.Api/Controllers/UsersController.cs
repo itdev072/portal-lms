@@ -29,7 +29,7 @@ public class UsersController : ApiControllerBase
         if (Data.Users.Where(u => u.Email.Equals(req.Email, StringComparison.OrdinalIgnoreCase)).Any())
             return BadRequest(new { message = "An account with that email already exists." });
 
-        var user = new ApplicationUser { Email = req.Email.Trim(), DisplayName = req.DisplayName.Trim(), Role = req.Role };
+        var user = new ApplicationUser { Email = req.Email.Trim(), DisplayName = req.DisplayName.Trim(), Role = req.Role, ProfilePictureDataUrl = req.ProfilePictureDataUrl };
         user.PasswordHash = _hasher.HashPassword(user, req.Password);
         Data.Users.Upsert(user);
         return Ok(UserDto.From(user));
@@ -43,6 +43,7 @@ public class UsersController : ApiControllerBase
         user.DisplayName = req.DisplayName;
         user.Role = req.Role;
         user.IsActive = req.IsActive;
+        if (req.ProfilePictureDataUrl != null) user.ProfilePictureDataUrl = req.ProfilePictureDataUrl;
         Data.Users.Upsert(user);
         return Ok(UserDto.From(user));
     }

@@ -15,4 +15,26 @@ public class ApplicationUser
     public UserRole Role { get; set; }
     public bool IsActive { get; set; } = true;
     public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
+
+    /// <summary>A small profile photo, stored inline as a data: URL (no blob storage available) — fine at avatar size, not for large images.</summary>
+    public string? ProfilePictureDataUrl { get; set; }
+
+    public UserPreferences Preferences { get; set; } = new();
+}
+
+public class UserPreferences
+{
+    public bool EmailNotifications { get; set; } = true;
+    public string Theme { get; set; } = "dark"; // "dark" | "light"
+    public string Language { get; set; } = "en"; // "en" | "km"
+}
+
+/// <summary>A single-row collection: platform-wide settings an Admin configures.</summary>
+public class PlatformSettings
+{
+    public string Id { get; set; } = "singleton";
+    public string SiteName { get; set; } = "Portal";
+    public string SupportEmail { get; set; } = "support@portal.local";
+    public bool AllowPublicRegistration { get; set; } = true;
+    public int DefaultAttendanceRadiusMeters { get; set; } = 100;
 }

@@ -26,6 +26,9 @@ public class AppData
     public JsonCollection<CampusLocation> CampusLocations { get; }
     public JsonCollection<AttendanceSession> AttendanceSessions { get; }
     public JsonCollection<AttendanceRecord> AttendanceRecords { get; }
+    public JsonCollection<LessonNote> LessonNotes { get; }
+    public JsonCollection<LessonQuestion> LessonQuestions { get; }
+    public JsonCollection<PlatformSettings> Settings { get; }
 
     public AppData(IWebHostEnvironment env)
     {
@@ -48,5 +51,8 @@ public class AppData
         CampusLocations = new JsonCollection<CampusLocation>(dataDir, "campus_locations.json", c => c.Id);
         AttendanceSessions = new JsonCollection<AttendanceSession>(dataDir, "attendance_sessions.json", s => s.Id);
         AttendanceRecords = new JsonCollection<AttendanceRecord>(dataDir, "attendance_records.json", r => r.Id);
+        LessonNotes = new JsonCollection<LessonNote>(dataDir, "lesson_notes.json", n => n.Id);
+        LessonQuestions = new JsonCollection<LessonQuestion>(dataDir, "lesson_questions.json", q => q.Id);
+        Settings = new JsonCollection<PlatformSettings>(dataDir, "settings.json", s => s.Id);
     }
 }

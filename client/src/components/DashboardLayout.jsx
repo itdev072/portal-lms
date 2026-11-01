@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
+import { Avatar } from "../pages/admin/AdminUsers";
 
 export default function DashboardLayout({ navItems, roleLabel, children }) {
   const { user, logout } = useAuth();
@@ -84,9 +85,7 @@ function UserFooter({ user, roleLabel, onLogout }) {
   return (
     <div className="mt-4 border-t border-surface-border pt-4">
       <div className="flex items-center gap-3 rounded-xl p-2">
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-500/20 text-sm font-semibold text-brand-300">
-          {user?.displayName?.[0]?.toUpperCase() || "?"}
-        </div>
+        <Avatar name={user?.displayName} src={user?.profilePictureDataUrl} size={36} />
         <div className="min-w-0 flex-1">
           <div className="truncate text-sm font-medium text-slate-100">{user?.displayName}</div>
           <div className="text-xs text-slate-500">{roleLabel}</div>

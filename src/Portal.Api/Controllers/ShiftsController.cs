@@ -7,15 +7,17 @@ using Portal.Api.Models.Dto;
 namespace Portal.Api.Controllers;
 
 [Route("api/admin/shifts")]
-[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin,Teacher")]
 public class ShiftsController : ApiControllerBase
 {
     public ShiftsController(AppData data) : base(data) { }
 
+    /// <summary>Readable by Teachers too — they pick a shift when creating their own class.</summary>
     [HttpGet]
     public IActionResult List() => Ok(Data.Shifts.All().Select(ShiftDto.From));
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public IActionResult Create(ShiftSaveRequest req)
     {
         var shift = new Shift { Name = req.Name, StartTime = req.StartTime, EndTime = req.EndTime, Days = req.Days };
@@ -24,6 +26,7 @@ public class ShiftsController : ApiControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     public IActionResult Update(string id, ShiftSaveRequest req)
     {
         var shift = Data.Shifts.Find(id);
@@ -37,6 +40,7 @@ public class ShiftsController : ApiControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public IActionResult Delete(string id)
     {
         if (Data.ClassSections.Where(c => c.ShiftId == id).Any())

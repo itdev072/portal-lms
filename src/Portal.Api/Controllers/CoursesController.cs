@@ -133,4 +133,59 @@ public class CoursesController : ApiControllerBase
     [Authorize(Roles = "Admin")]
     public IActionResult AdminList()
         => Ok(Data.Levels.All().OrderBy(l => l.Order).Select(ToDto));
+
+    // ---- Admin: lesson / content management ----
+
+    [HttpGet("~/api/admin/courses/{courseId}/lessons")]
+    [Authorize(Roles = "Admin")]
+    public IActionResult AdminLessons(string courseId)
+        => Ok(Data.Lessons.Where(l => l.LevelId == courseId).OrderBy(l => l.Order).Select(LessonAdminDto.From));
+
+    [HttpPost("~/api/admin/lessons")]
+    [Authorize(Roles = "Admin")]
+    public IActionResult CreateLesson(LessonSaveRequest req)
+    {
+        var lesson = new Lesson
+        {
+            LevelId = req.LevelId,
+            Order = req.Order,
+            TitleEn = req.TitleEn,
+            TitleKm = req.TitleKm,
+            EstimatedMinutes = req.EstimatedMinutes,
+            XpValue = req.XpValue,
+            VideoUrl = req.VideoUrl,
+            DurationSeconds = req.DurationSeconds,
+            ExplainerMd = req.ExplainerMd,
+            ResourcesMd = req.ResourcesMd
+        };
+        Data.Lessons.Upsert(lesson);
+        return Ok(LessonAdminDto.From(lesson));
+    }
+
+    [HttpPut("~/api/admin/lessons/{id}")]
+    [Authorize(Roles = "Admin")]
+    public IActionResult UpdateLesson(string id, LessonSaveRequest req)
+    {
+        var lesson = Data.Lessons.Find(id);
+        if (lesson == null) return NotFound();
+        lesson.Order = req.Order;
+        lesson.TitleEn = req.TitleEn;
+        lesson.TitleKm = req.TitleKm;
+        lesson.EstimatedMinutes = req.EstimatedMinutes;
+        lesson.XpValue = req.XpValue;
+        lesson.VideoUrl = req.VideoUrl;
+        lesson.DurationSeconds = req.DurationSeconds;
+        lesson.ExplainerMd = req.ExplainerMd;
+        lesson.ResourcesMd = req.ResourcesMd;
+        Data.Lessons.Upsert(lesson);
+        return Ok(LessonAdminDto.From(lesson));
+    }
+
+    [HttpDelete("~/api/admin/lessons/{id}")]
+    [Authorize(Roles = "Admin")]
+    public IActionResult DeleteLesson(string id)
+    {
+        Data.Lessons.Delete(id);
+        return Ok();
+    }
 }

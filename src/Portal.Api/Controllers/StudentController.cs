@@ -40,6 +40,18 @@ public class StudentController : ApiControllerBase
         return Ok(courses);
     }
 
+    /// <summary>Which of this course's lessons the student has completed — drives the
+    /// green-checkmark state in the course player's curriculum sidebar.</summary>
+    [HttpGet("courses/{courseId}/progress")]
+    public IActionResult CourseProgress(string courseId)
+    {
+        var completedLessonIds = Data.Progress
+            .Where(p => p.StudentId == CurrentUserId && p.LevelId == courseId && p.Status == ProgressStatus.Completed && p.LessonId != null)
+            .Select(p => p.LessonId!)
+            .ToList();
+        return Ok(new { completedLessonIds });
+    }
+
     [HttpPost("quiz/{quizId}/submit")]
     public IActionResult SubmitQuiz(string quizId, [FromBody] int selectedIndex)
     {

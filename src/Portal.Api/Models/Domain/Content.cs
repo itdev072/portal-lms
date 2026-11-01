@@ -51,6 +51,34 @@ public class Lesson
     public List<CodeExample> CodeExamples { get; set; } = new();
     public int XpValue { get; set; } = 10;
     public int EstimatedMinutes { get; set; } = 15;
+
+    // Course-player fields (video lecture).
+    public string VideoUrl { get; set; } = string.Empty;
+    public int DurationSeconds { get; set; } = 300;
+    public string ResourcesMd { get; set; } = string.Empty;
+}
+
+/// <summary>A student's note on a lesson's video, anchored to a playback timestamp.</summary>
+public class LessonNote
+{
+    public string Id { get; set; } = Guid.NewGuid().ToString("N");
+    public string StudentId { get; set; } = string.Empty;
+    public string LessonId { get; set; } = string.Empty;
+    public double TimestampSeconds { get; set; }
+    public string Text { get; set; } = string.Empty;
+    public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
+}
+
+/// <summary>A student's question (or a teacher's answer) on a lesson — the Q&amp;A tab.</summary>
+public class LessonQuestion
+{
+    public string Id { get; set; } = Guid.NewGuid().ToString("N");
+    public string LessonId { get; set; } = string.Empty;
+    public string AuthorId { get; set; } = string.Empty;
+    public string AuthorName { get; set; } = string.Empty;
+    public string Text { get; set; } = string.Empty;
+    public string? ParentId { get; set; } // null = question, set = a reply
+    public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
 }
 
 public class QuizItem

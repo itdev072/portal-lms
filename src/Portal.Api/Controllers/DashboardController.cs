@@ -48,6 +48,27 @@ public class DashboardController : ApiControllerBase
             absent = Data.AttendanceRecords.Where(r => r.Date == d && r.Status == AttendanceStatus.Absent).Count
         });
 
+        var revenueByCourse = courses.Select(c => new
+        {
+            c.NameEn,
+            revenue = classes.Where(cs => cs.LevelId == c.Id)
+                .SelectMany(cs => Data.Enrollments.Where(e => e.ClassSectionId == cs.Id))
+                .Count() * c.Price
+        }).Where(x => x.revenue > 0).OrderByDescending(x => x.revenue).ToList();
+
+        var allRecords = Data.AttendanceRecords.All();
+        var statusBreakdown = new[] { AttendanceStatus.Present, AttendanceStatus.Late, AttendanceStatus.Absent, AttendanceStatus.Excused, AttendanceStatus.OutOfRange }
+            .Select(s => new { status = s.ToString(), count = allRecords.Count(r => r.Status == s) })
+            .Where(x => x.count > 0)
+            .ToList();
+
+        var usersByRole = new[]
+        {
+            new { role = "Student", count = students },
+            new { role = "Teacher", count = teachers },
+            new { role = "Admin", count = users.Count(u => u.Role == UserRole.Admin) }
+        };
+
         return Ok(new
         {
             studentCount = students,
@@ -57,7 +78,10 @@ public class DashboardController : ApiControllerBase
             totalEnrollments = enrollments.Count,
             revenue,
             enrollmentsByCourse,
-            attendanceTrend
+            attendanceTrend,
+            revenueByCourse,
+            statusBreakdown,
+            usersByRole
         });
     }
 
@@ -108,19 +132,24 @@ public class DashboardController : ApiControllerBase
             var course = Data.Levels.Find(courseId);
             var lessonCount = Data.Lessons.Where(l => l.LevelId == courseId).Count;
             var completed = progress.Count(p => p.LevelId == courseId && p.LessonId != null && p.Status == ProgressStatus.Completed);
+            var percent = lessonCount == 0 ? 0 : (int)Math.Round(100.0 * completed / lessonCount);
             return new
             {
                 courseId,
                 courseName = course?.NameEn ?? courseId,
                 emoji = course?.ThumbnailEmoji,
+                accentColor = course?.AccentColor,
                 lessonCount,
                 completed,
-                percent = lessonCount == 0 ? 0 : (int)Math.Round(100.0 * completed / lessonCount)
+                percent,
+                status = (lessonCount > 0 && completed >= lessonCount) ? "Completed" : "InProgress"
             };
-        });
+        }).ToList();
 
         var upcomingExams = classIds.SelectMany(cid => Data.Exams.Where(e => e.ClassSectionId == cid && e.IsPublished && e.ClosesAt > DateTimeOffset.UtcNow))
-            .Select(e => new { e.Id, e.Title, e.OpensAt, e.ClosesAt });
+            .Select(e => new { e.Id, e.Title, e.OpensAt, e.ClosesAt })
+            .OrderBy(e => e.ClosesAt)
+            .ToList();
 
         var schedule = classes.Select(c => new
         {
@@ -128,8 +157,42 @@ public class DashboardController : ApiControllerBase
             c.Name,
             shift = Data.Shifts.Find(c.ShiftId)?.Name,
             days = Data.Shifts.Find(c.ShiftId)?.Days
-        });
+        }).ToList();
 
-        return Ok(new { totalXp, courseProgress, upcomingExams, schedule });
+        // The soonest upcoming scheduled session across all enrolled classes — surfaced
+        // at the top of the "My Learning" dashboard so a student never misses it.
+        var next = classes
+            .Select(c => new { Class = c, Shift = Data.Shifts.Find(c.ShiftId) })
+            .Where(x => x.Shift != null)
+            .Select(x => new { x.Class, x.Shift, At = NextOccurrence(x.Shift!) })
+            .Where(x => x.At != null)
+            .OrderBy(x => x.At)
+            .FirstOrDefault();
+
+        object? nextShift = next == null ? null : new
+        {
+            classId = next.Class.Id,
+            className = next.Class.Name,
+            shiftName = next.Shift!.Name,
+            at = next.At
+        };
+
+        return Ok(new { totalXp, courseProgress, upcomingExams, schedule, nextShift });
+    }
+
+    /// <summary>The next datetime (UTC) a recurring shift falls on, from now forward,
+    /// scanning up to 7 days ahead.</summary>
+    private static DateTimeOffset? NextOccurrence(Shift shift)
+    {
+        if (shift.Days.Count == 0) return null;
+        var now = DateTimeOffset.UtcNow;
+        for (var i = 0; i < 8; i++)
+        {
+            var date = now.Date.AddDays(i);
+            if (!shift.Days.Contains(date.DayOfWeek)) continue;
+            var candidate = new DateTimeOffset(date, TimeSpan.Zero).Add(shift.StartTime);
+            if (candidate > now) return candidate;
+        }
+        return null;
     }
 }
